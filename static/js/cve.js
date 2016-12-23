@@ -28,6 +28,10 @@ function update(c) {
       }
       $("#progressbar").attr("value", data.patched);
       updateProgressBar();
+    } else {
+      $('#error-popover').css({'display': 'initial'});
+      $('#error-msg').text(data.error);
+      $('#error').css({'display': 'initial'});
     }
   });
 }
@@ -36,6 +40,11 @@ function updateProgressBar() {
   $("#progressbar").progressbar({
     value: parseInt($("#progressbar").attr("value")),
   });
+}
+
+function closeError() {
+  $('#error-popover').css({'display': 'none'});
+  $('#error').css({'display': 'none'});
 }
 
 function updateCVEStatus(target) {

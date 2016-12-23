@@ -12,13 +12,20 @@
 
     <title>LineageOS CVE Checklist for {{ kernel['repo'] }}</title>
     <body>
+      <div id='error-popover'>
+        <div style='position: absolute; left: 50%; top: 50%;'>
+          <div id='error'><span id='error-header'>Error: </span><span id='error-msg'>an error message!</span> <a href='javascript:void(0)' onclick='closeError()'>x</a></div>
+        </div>
+      </div>
       <div id='status_ids' style='display: none;'>
       {% for s in status_ids %}
         <div id={{ 'status_' ~ status_ids[s]['id'] }}>{{ status_ids[s]['status'] }}</div>
       {% endfor %}
       </div>
       <div class='frame container'>
-        <div class='back'><a href='/'>back</a></div>
+        <header>
+          <span class='back'><a href='/'>back</a></span>
+        </header>
         <h3>
           <a href='https://github.com/LineageOS/{{ kernel.repo }}'>{{ kernel.repo }}</a>
         </h3>
