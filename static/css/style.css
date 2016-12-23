@@ -155,7 +155,7 @@ div.kernelrow, div.cvediv {
   text-align: left;
 }
 
-span[class^="status_"] {
+span.status {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -168,4 +168,13 @@ span[class^="status_"] {
 
 span.device {
   padding: 0 10px;
+}
+
+input[type='checkbox'] {
+    margin: 0;
+    margin-right: 10px;
+}
+
+#toggleall {
+    text-align: left;
 }
