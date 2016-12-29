@@ -12,7 +12,7 @@ configfile = "options.json"
 devicefile = "kernels.json"
 dbfile = "sqlite.db"
 
-db_version = 3
+db_version = 4
 forceDBUpdate = False
 
 status_ids = {}
@@ -35,7 +35,7 @@ with open(devicefile) as device_file:
 def index():
     return render_template('index.html', kernels = kernels)
 
-@app.route("/<string:k>")
+@app.route("/kernel/<string:k>")
 def kernel(k):
     kernel = utils.getKernelByRepo(k)
     if kernel is None:
@@ -47,6 +47,11 @@ def kernel(k):
     else:
       devs = ['No officially supported devices!']
     return render_template('kernel.html', kernel = kernel, patched = patched, cves = allCVEs, status_ids = status_ids, patches = patches, devices = devs)
+
+@app.route("/cve/<string:c>")
+def cve(c):
+    return jsonify({'changes': utils.getChangesForCve(c)})
+
 
 @app.route("/update", methods=['POST'])
 def update():

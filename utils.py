@@ -59,6 +59,8 @@ def updateDB():
       v, n = getVendorNameFromRepo(row['repo'])
       if v is not "error" and n is not "error":
         c.execute('UPDATE kernel SET vendor = ?, name = ? WHERE id = ?', v, n, row['id'])
+  if version < 4:
+    c.execute('CREATE TABLE change (id INTEGER PRIMARY KEY, cve_id INTEGER, kernel_version REAL, gerrit_url TEXT)')
 
   c.execute('UPDATE config set db_version=?', str(app.db_version))
   conn.commit()
@@ -178,6 +180,25 @@ def getKernelByRepo(repo):
   conn.close()
 
   return kernel
+
+def getChangesForCve(name):
+  conn = sqlite3.connect(app.dbfile)
+  c = conn.cursor()
+
+  c.execute('SELECT * FROM cve WHERE cve = ?', (name,))
+  row = c.fetchone()
+  if row is None:
+    return None
+
+  cve_id = row[0]
+  cve = {'id': cve_id, 'cve': row[1]}
+
+  c.execute('SELECT * FROM change WHERE cve_id = ?', (cve_id,))
+  row = c.fetchone()
+  changes = []
+  while row is not None:
+    changes.append({'id': row[0], 'cve': cve, 'kernel_version': row[1], 'gerrit_url': row[2]})
+  return changes
 
 def getNumberOfPatchedByRepo(repo):
   print(repo)
